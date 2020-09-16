@@ -1,11 +1,13 @@
 import React from 'react';
 import {SafeAreaView, StatusBar} from 'react-native';
-
+import Home from './src/views/Home';
 const App = () => {
   return (
     <>
       <StatusBar barStyle="dark-content" />
-      <SafeAreaView></SafeAreaView>
+      <SafeAreaView>
+        <Home />
+      </SafeAreaView>
     </>
   );
 };

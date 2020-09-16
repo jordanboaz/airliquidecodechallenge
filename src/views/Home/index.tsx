@@ -3,7 +3,6 @@ import {View, Text} from 'react-native';
 import {getTodos} from '../../services/todoService';
 const Home = () => {
   const [todos, setTodos] = useState([]);
-
   useEffect(() => {
     fetchList();
   }, []);

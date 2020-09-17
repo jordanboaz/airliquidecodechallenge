@@ -1,12 +1,37 @@
-import {call, put, all, takeLatest} from 'redux-saga/effects';
+import {
+  call,
+  put,
+  select,
+  all,
+  takeLatest,
+  takeEvery,
+} from 'redux-saga/effects';
 import {submitTasks} from '../../services/checklistService';
-import {submitTodosSuccess} from './actions';
-import {SUBMIT_TODOS_REQUEST} from './types';
+import {submitTodosSuccess, addTodoSuccess} from './actions';
+import {SUBMIT_TODOS_REQUEST, ADD_TODO_REQUEST} from './types';
 
 function* submitTodos() {
-  const response = yield call(submitTasks);
+  const todosDone = yield select((state) =>
+    state.todos.filter((todo) => todo.status === 'checked'),
+  );
+  const response = yield call(submitTasks, todosDone);
 
   yield put(submitTodosSuccess(response));
 }
 
-export default all([takeLatest(SUBMIT_TODOS_REQUEST, submitTodos)]);
+function* addTodo({payload}) {
+  console.log(payload);
+  const todoExists = yield select((state) =>
+    state.todos.find((todo) => todo.name === payload.name),
+  );
+
+  if (!todoExists) {
+    const newTodo = {name: payload.name, status: 'unchecked'};
+    yield put(addTodoSuccess(newTodo));
+  }
+}
+
+export default all([
+  takeEvery(ADD_TODO_REQUEST, addTodo),
+  takeLatest(SUBMIT_TODOS_REQUEST, submitTodos),
+]);

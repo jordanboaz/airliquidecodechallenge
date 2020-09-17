@@ -1,4 +1,4 @@
 # airliquidecodechallenge
 
 Run:
-yarn android
+yarn && yarn android

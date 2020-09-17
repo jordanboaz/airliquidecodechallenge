@@ -8,7 +8,7 @@ import {
 } from 'redux-saga/effects';
 import {submitTasks} from '../../services/checklistService';
 import {submitTodosSuccess, addTodoSuccess} from './actions';
-import {SUBMIT_TODOS_REQUEST, ADD_TODO_REQUEST} from './types';
+import {SUBMIT_TODOS_REQUEST, ADD_TODO_REQUEST, TodoActionTypes} from './types';
 
 function* submitTodos() {
   const todosDone = yield select((state) =>
@@ -20,7 +20,6 @@ function* submitTodos() {
 }
 
 function* addTodo({payload}) {
-  console.log(payload);
   const todoExists = yield select((state) =>
     state.todos.find((todo) => todo.name === payload.name),
   );

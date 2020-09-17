@@ -8,7 +8,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
+      <SafeAreaView style={{flex: 1}}>
         <Home />
       </SafeAreaView>
     </Provider>

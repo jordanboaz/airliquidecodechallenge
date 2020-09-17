@@ -1,13 +1,14 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import React, {useEffect} from 'react';
 import {getTodos} from '../../services/todoService';
-import {submitTasks} from '../../services/checklistService';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
+import {useSelector} from '../../store';
 import {
   submitTodosRequest,
   toggleTodo,
   addTodoRequest,
 } from '../../store/todos/actions';
+import {Container, Content, Button, ButtonText} from './style';
+import Checkbox from '../../components/Checkbox';
 
 const Home = () => {
   const todos = useSelector((state) => state.todos);
@@ -20,31 +21,39 @@ const Home = () => {
 
   const fetchList = async () => {
     const data = await getTodos();
-    data.map((each) => dispatch(addTodoRequest(each)));
+    data.map((each: string) => dispatch(addTodoRequest(each)));
   };
 
   console.log('on selector', todos);
+
+  const onPressCheckbox = (todo) => {
+    console.log(todo);
+    if (todo.status !== 'sent') {
+      dispatch(toggleTodo(todo.name));
+    }
+  };
+
   return (
-    <View>
-      {todos.map((todo) => (
-        <Text
-          key={todo.name}
-          onPress={() => {
-            console.log(todo);
-            if (todo.status !== 'sent') {
-              dispatch(toggleTodo(todo.name));
-            }
-          }}>
-          {todo.name}
-        </Text>
-      ))}
-      <TouchableOpacity
+    <Container>
+      <Content>
+        {todos.map((todo) => (
+          <Checkbox
+            key={todo.name}
+            name={todo.name}
+            checked={todo.status === 'checked'}
+            completed={todo.status === 'sent'}
+            onPress={() => onPressCheckbox(todo)}
+          />
+        ))}
+      </Content>
+
+      <Button
         onPress={() => {
           dispatch(submitTodosRequest());
         }}>
-        <Text>Button</Text>
-      </TouchableOpacity>
-    </View>
+        <ButtonText>Enviar</ButtonText>
+      </Button>
+    </Container>
   );
 };
 

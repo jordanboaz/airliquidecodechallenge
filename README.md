@@ -1,4 +1,4 @@
-# airliquidecodechallenge
+# Air Liquide Code Challenge
 
 This project runs on React Native.
 
